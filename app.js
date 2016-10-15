@@ -1,12 +1,29 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import Sequelize from 'sequelize';
+import config from './config.json';
+
+global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password, {
+  host: 'localhost',
+  dialect: 'postgres',
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
+});
+
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+const PORT = process.env.NODE_PORT || 3000
+
+
+
 
 var app = express();
 
@@ -50,5 +67,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.listen(PORT)
+console.log(`API started on ${PORT}`)
 
-module.exports = app;
+
