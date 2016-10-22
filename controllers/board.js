@@ -1,6 +1,6 @@
 import User from '../models/user'
 import Board from '../models/board'
-import Advert from '../models/advert'
+import Card from '../models/card'
 
 let board = {};
 
@@ -23,14 +23,14 @@ board.sendBoard = (req, res, next) => {
   res.json(req.board)
 }
 
-board.postAdvert = async (req, res, next) => {
+board.postCard = async (req, res, next) => {
   try{
-    let advertBody = req.body
-    advertBody.owner_id = req.user.id
-    advertBody.board_id = req.params.id
-    advertBody.rating = 0
-    let advertObject = await Advert.create(advertBody)
-    req.advert = advertObject
+    let cardBody = req.body
+    cardBody.owner_id = req.user.id
+    cardBody.board_id = req.params.id
+    cardBody.rating = 0
+    let cardObject = await Card.create(cardBody)
+    req.card = cardObject
     //also update counters on connected board
     let boardObject = await Board.findById(req.params.id)
     boardObject.increment('posts_count')
@@ -42,12 +42,12 @@ board.postAdvert = async (req, res, next) => {
   }
 }
 
-board.sendAdvert = (req, res, next) => {
-  res.json(req.advert)
+board.sendCard = (req, res, next) => {
+  res.json(req.card)
 }
 
 board.getBoardsList = (req, res, next) => {
-  
+
 }
 
 export default board;

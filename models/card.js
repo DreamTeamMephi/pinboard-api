@@ -1,6 +1,6 @@
 import Sequelize from 'Sequelize';
 
-var Advert = global.sequelize.define('advert', {
+var Card = global.sequelize.define('card', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
@@ -27,9 +27,9 @@ var Advert = global.sequelize.define('advert', {
 });
 
 //{force: true}
-Advert.sync().then(function () {
+Card.sync().then(function () {
   // Table created
 });
 
 
-export default Advert
+export default Card

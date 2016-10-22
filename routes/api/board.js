@@ -9,6 +9,6 @@ router.get('/', board.getBoardsList)
 
 router.post('/', checkAuth, board.createBoard, board.sendBoard)
 
-router.post('/:id/postAdvert', checkAuth, board.postAdvert, board.sendAdvert)
+router.post('/:id/postCard', checkAuth, board.postCard, board.sendCard)
 
 module.exports = router;
