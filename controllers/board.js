@@ -46,8 +46,17 @@ board.sendCard = (req, res, next) => {
   res.json(req.card)
 }
 
-board.getBoardsList = (req, res, next) => {
-
+board.getBoardsList = async (req, res, next) => {
+  try{
+    let offset = req.query.offset || 0
+    let count = req.query.count || 20
+    let boards = await Board.findAll({ offset: offset, limit: count })
+    res.json({
+      boards: boards  
+    });
+  } catch (ex) {
+    next(ex)
+  }
 }
 
 export default board;
