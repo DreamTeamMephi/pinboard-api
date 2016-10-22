@@ -11,5 +11,6 @@ router.post('/', checkAuth, board.createBoard, board.sendBoard)
 
 router.post('/:id/postCard', checkAuth, board.postCard, board.sendCard)
 
+router.get('/:id/', board.getCards)
 
 module.exports = router;

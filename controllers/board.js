@@ -59,4 +59,18 @@ board.getBoardsList = async (req, res, next) => {
   }
 }
 
+board.getCards = async (req, res, next) => {
+  try{
+    let offset = req.query.offset || 0
+    let count = req.query.count || 20
+    let boards = await Card.findAll({ offset: offset, limit: count, where: {board_id: req.params.id} })
+    res.json({
+      cards: boards  
+    });
+  } catch (ex) {
+    next(ex)
+  }
+}
+
+
 export default board;
