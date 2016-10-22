@@ -63,8 +63,21 @@ user.printSessionInfo = (req, res, next) => {
 }
 
 user.logout = (req, res, next) => {
-  req.logOut()
-  next()
+    req.logOut()
+    next()
+}
+
+user.updateInfo = async (req, res, next) => {
+    try{
+        if (req.body.username){
+            req.user.username = req.body.username
+        }
+        await req.user.save()
+
+        next()
+    } catch (ex){
+        next(ex);
+    }
 }
 
 export default user;

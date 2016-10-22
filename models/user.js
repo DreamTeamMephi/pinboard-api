@@ -1,11 +1,7 @@
 import Sequelize from 'Sequelize';
 
 var User = global.sequelize.define('user', {
-  firstName: {
-    type: Sequelize.STRING,
-    field: 'first_name' // Will result in an attribute that is firstName when user facing but first_name in the database
-  },
-  lastName: {
+  username: {
     type: Sequelize.STRING
   },
   email: {
