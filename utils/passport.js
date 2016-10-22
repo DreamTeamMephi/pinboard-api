@@ -33,11 +33,7 @@ passport.use(new LocalStrategy({
         if (!user) return done(null, null);
         
         try {
-            await password.verifyPassword({
-                hash: user.get('local_hash'),
-                salt: user.get('local_salt'),
-                iterations: user.get('local_iterations')
-            }, pass)
+            await password.verifyPassword(user.get('local'), pass)
         } catch (e) {
             return done('WRONG_PASSWORD', null)
         }

@@ -16,16 +16,8 @@ var User = global.sequelize.define('user', {
     allowNull: false,
     unique: true
   },
-  local_hash: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  local_salt: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  local_iterations: {
-    type: Sequelize.INTEGER,
+  local: {
+    type: Sequelize.JSON,
     allowNull: false
   }
 }, {

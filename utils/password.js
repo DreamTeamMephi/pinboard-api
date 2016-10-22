@@ -6,9 +6,9 @@ import crypto from 'crypto'
 
 let password = {}
 
-password.hashIterations = 1000
-password.hashLength = 64
-password.saltLength = 32
+password.hashIterations = 10000
+password.hashLength = 256
+password.saltLength = 64
 
 password.generateRandom = function (length) {
   length = length || password.saltLength

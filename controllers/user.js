@@ -10,9 +10,7 @@ user.localRegister = async (req, res, next) => {
         log.info(user);
         if (!user.password) return next('NO_PASSWORD_GIVEN');
         let passwordObject = await password.getLocal(user.password);
-        user.local_hash = passwordObject.hash;
-        user.local_salt = passwordObject.salt;
-        user.local_iterations = passwordObject.iterations;
+        user.local = passwordObject;
 
         let userObject = await User.create(user); 
         req.user = userObject;
@@ -44,9 +42,7 @@ user.localLogin = (req, res, next) => {
 user.sendUser = (req, res, next) => {
     let user = req.user ? req.user.get() : null;
     if (user){
-        delete user.local_hash;
-        delete user.local_iterations;
-        delete user.local_salt;
+        delete user.local;
     }
 
     res.json({
