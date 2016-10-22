@@ -13,8 +13,7 @@ user.register = async (req, res, next) => {
         user.local_salt = passwordObject.salt;
         user.local_iterations = passwordObject.iterations;
 
-        // we don't need an entity in this case, just plain object is fine
-        let userObject = await User.create(user, { raw: true }); 
+        let userObject = await User.create(user); 
         req.user = userObject;
         next();
     } catch(ex) {
@@ -31,7 +30,7 @@ user.sendUser = (req, res, next) => {
         delete user.local_iterations;
         delete user.local_salt;
     }
-    
+
     res.json({
         user: user
     });
