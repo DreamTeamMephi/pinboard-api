@@ -9,10 +9,6 @@ import bunyan from 'bunyan';
 import session from 'express-session';
 import seqStore from 'connect-session-sequelize';
 
-
-let SequelizeStore = seqStore(session.Store);
-
-
 global.log = bunyan.createLogger({
   name: 'pinboard-api',
   serializers: {
@@ -20,7 +16,6 @@ global.log = bunyan.createLogger({
     res: bunyan.stdSerializers.res
   }
 });
-
 
 global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password, {
   host: process.env.POSTGRES_HOST || 'localhost',
@@ -33,15 +28,7 @@ global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password
   }
 });
 
-
-
-
-
-
 const PORT = process.env.PORT || 3000
-
-
-
 
 var app = express();
 
@@ -58,57 +45,24 @@ app.use((req, res, next) => {
 });
 
 
+let SequelizeStore = seqStore(session.Store);
+
+let store = new SequelizeStore({
+    db: sequelize
+});
+store.sync();
+
 //middleware for sessions
 app.use(session({
   secret: 'FluffyFox',
+  store: store,
   saveUninitialized: true,
   resave: false,
   proxy: true // if you do SSL outside of node. 
 }))
 
-// var Session = sequelize.define('Session', {
-//   sid: {
-//     type: Sequelize.STRING,
-//     primaryKey: true
-//   },
-//   userId: Sequelize.STRING,
-//   expires: Sequelize.DATE
-// });
-
-
-// Session.sync().then(function () {
-//   // Table created
-// });
- 
-// function extendDefaultFields(defaults, session) {
-//   return {
-//     expires: defaults.expires,
-//     userId: session.userId
-//   };
-// }
- 
-// var store = new SequelizeStore({
-//   db: sequelize,
-//   table: 'Session',
-//   extendDefaultFields: extendDefaultFields
-// });
-
-// //middleware for sessions
-// app.use(session({
-//   secret: 'keyboard cat',
-//   store: store,
-//   proxy: true // if you do SSL outside of node. 
-// }))
-
-
 require('./utils/passport')(app)
-
-//var routes = require('./routes/index');
 require('./routes/')(app);
-//var users = require('./routes/users');
-
-//app.use('/', routes);
-//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
