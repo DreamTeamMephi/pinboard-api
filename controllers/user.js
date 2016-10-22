@@ -1,9 +1,10 @@
 import User from '../models/user'
 import password from '../utils/password'
+import passport from 'passport'
 
 let user = {};
 
-user.register = async (req, res, next) => {
+user.localRegister = async (req, res, next) => {
     try {
         let user = req.body;
         log.info(user);
@@ -23,6 +24,23 @@ user.register = async (req, res, next) => {
     
 }
 
+user.localLogin = (req, res, next) => {
+    let loginBody = req.body.user ? req.body.user : req.body
+    console.log('localLogin', loginBody.email)
+
+    if (req.user) return next()
+
+    if (!loginBody.email || !loginBody.password) return next('MISSING_CREDENTIALS')
+
+    Object.assign(req.body, loginBody)
+
+    return passport.authenticate('local', function (err, user, info) {
+        if (err) return next(err)
+        if (!user) return next('NO_SUCH_USER')
+        req.logIn(user, next)
+    })(req, res, next)
+}
+
 user.sendUser = (req, res, next) => {
     let user = req.user ? req.user.get() : null;
     if (user){
@@ -34,6 +52,23 @@ user.sendUser = (req, res, next) => {
     res.json({
         user: user
     });
+}
+
+user.sendToken = (req, res, next) => {
+    res.json(req.session);
+    log.info(req.session);
+}
+
+user.printSessionInfo = (req, res, next) => {
+    res.json({
+        session: req.session,
+        user: req.user    
+    });
+}
+
+user.logout = (req, res, next) => {
+  req.logOut()
+  next()
 }
 
 export default user;

@@ -4,7 +4,15 @@ import user from '../../controllers/user';
 
 let router = Router();
 
-router.post('/local/register', user.register, user.sendUser)
+router.post('/local/register', user.localRegister, user.sendUser)
+
+router.get('/token', user.sendToken)
+
+router.post('/local/login', user.localLogin, user.sendUser);
+
+router.get('/sessionInfo', user.printSessionInfo)
+
+router.post('/logout', user.logout, user.printSessionInfo);
 
 //router.get('/', user.sendUser);
 

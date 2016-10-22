@@ -6,6 +6,12 @@ import bodyParser from 'body-parser';
 import Sequelize from 'sequelize';
 import config from './config.json';
 import bunyan from 'bunyan';
+import session from 'express-session';
+import seqStore from 'connect-session-sequelize';
+
+
+let SequelizeStore = seqStore(session.Store);
+
 
 global.log = bunyan.createLogger({
   name: 'pinboard-api',
@@ -52,12 +58,57 @@ app.use((req, res, next) => {
 });
 
 
-var routes = require('./routes/index');
-require('./routes/')(app);
-var users = require('./routes/users');
+//middleware for sessions
+app.use(session({
+  secret: 'FluffyFox',
+  saveUninitialized: true,
+  resave: false,
+  proxy: true // if you do SSL outside of node. 
+}))
 
-app.use('/', routes);
-app.use('/users', users);
+// var Session = sequelize.define('Session', {
+//   sid: {
+//     type: Sequelize.STRING,
+//     primaryKey: true
+//   },
+//   userId: Sequelize.STRING,
+//   expires: Sequelize.DATE
+// });
+
+
+// Session.sync().then(function () {
+//   // Table created
+// });
+ 
+// function extendDefaultFields(defaults, session) {
+//   return {
+//     expires: defaults.expires,
+//     userId: session.userId
+//   };
+// }
+ 
+// var store = new SequelizeStore({
+//   db: sequelize,
+//   table: 'Session',
+//   extendDefaultFields: extendDefaultFields
+// });
+
+// //middleware for sessions
+// app.use(session({
+//   secret: 'keyboard cat',
+//   store: store,
+//   proxy: true // if you do SSL outside of node. 
+// }))
+
+
+require('./utils/passport')(app)
+
+//var routes = require('./routes/index');
+require('./routes/')(app);
+//var users = require('./routes/users');
+
+//app.use('/', routes);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -93,5 +144,6 @@ app.use(function(err, req, res, next) {
 log.info(`API started on ${PORT}`)
 
 app.listen(PORT)
+
 
 
