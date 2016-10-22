@@ -10,9 +10,20 @@ var User = global.sequelize.define('user', {
   },
   lastName: {
     type: Sequelize.STRING
+  },
+  email: {
+    type: Sequelize.STRING,
+    required: true
   }
 }, {
-  freezeTableName: true // Model tableName will be the same as the model name
+  freezeTableName: true, // Model tableName will be the same as the model name
+  indexes: [
+    // Create a unique index on email
+    {
+      unique: true,
+      fields: ['email']
+    }
+  ]
 });
 
 User.sync({force: true}).then(function () {

@@ -10,14 +10,16 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  let promise = User.create({
-    firstName: 'lalka',
-    lastName: 'sosalka'
-  })
-  console.log(promise)
-  let result = await promise;
-  console.log(result)
-  res.json(result);
+  try{
+    let promise = User.create(req.body)
+
+    console.log(promise)
+    let result = await promise;
+    console.log(result)
+    res.json(result);
+  } catch (err){
+    res.json(err)
+  }
 })
 
 module.exports = router;
