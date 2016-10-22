@@ -1,4 +1,4 @@
-# pinboard-api
+# pinboard-api ![Build status](https://api.travis-ci.org/DreamTeamMephi/pinboard-api.svg?branch=master)
 Node.js API backend for pinboard project
 
 How to deploy this repo on your local machine?
