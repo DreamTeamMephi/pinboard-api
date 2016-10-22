@@ -5,6 +5,16 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import Sequelize from 'sequelize';
 import config from './config.json';
+import bunyan from 'bunyan';
+
+global.log = bunyan.createLogger({
+  name: 'pinboard-api',
+  serializers: {
+    req: bunyan.stdSerializers.req,
+    res: bunyan.stdSerializers.res
+  }
+});
+
 
 global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password, {
   host: 'localhost',
@@ -20,7 +30,7 @@ global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-const PORT = process.env.NODE_PORT || 3000
+const PORT = process.env.PORT || 3000
 
 
 
@@ -32,6 +42,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//My own middleware for testing purposes
+app.use((req, res, next) => {
+    log.info({ req: req }, 'start request');  // <-- this is the guy we're testing
+    next();
+});
+
+
 
 app.use('/', routes);
 app.use('/users', users);
@@ -50,7 +68,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.json({
       message: err.message,
       error: err
     });
@@ -61,13 +79,14 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.json({
     message: err.message,
     error: {}
   });
 });
 
+log.info(`API started on ${PORT}`)
+
 app.listen(PORT)
-console.log(`API started on ${PORT}`)
 
 
