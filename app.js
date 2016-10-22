@@ -45,6 +45,7 @@ app.use((req, res, next) => {
 });
 
 
+//Setting for postgres session storage
 let SequelizeStore = seqStore(session.Store);
 
 let store = new SequelizeStore({

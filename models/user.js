@@ -1,6 +1,3 @@
-/**
- * Created by pter9_000 on 16.10.2016.
- */
 import Sequelize from 'Sequelize';
 
 var User = global.sequelize.define('user', {

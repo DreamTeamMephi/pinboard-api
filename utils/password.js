@@ -6,7 +6,7 @@ import crypto from 'crypto'
 
 let password = {}
 
-password.hashIterations = 10000
+password.hashIterations = 1000
 password.hashLength = 256
 password.saltLength = 64
 
