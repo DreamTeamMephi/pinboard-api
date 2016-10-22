@@ -17,7 +17,8 @@ global.log = bunyan.createLogger({
 
 
 global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password, {
-  host: 'localhost',
+  host: process.env.POSTGRES_HOST || 'localhost',
+  port: process.env.POSTGRES_PORT || 5432,
   dialect: 'postgres',
   pool: {
     max: 5,
@@ -27,8 +28,9 @@ global.sequelize = new Sequelize('pinboard', 'postgres',config.postgres_password
 });
 
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+
+
+
 
 const PORT = process.env.PORT || 3000
 
@@ -50,6 +52,9 @@ app.use((req, res, next) => {
 });
 
 
+var routes = require('./routes/index');
+require('./routes/')(app);
+var users = require('./routes/users');
 
 app.use('/', routes);
 app.use('/users', users);

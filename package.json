@@ -22,8 +22,10 @@
     "express": "~4.13.4",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
+    "passport": "^0.3.2",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
+    "require-dir": "^0.3.1",
     "sequelize": "^3.24.4",
     "serve-favicon": "~2.3.0"
   }

@@ -13,7 +13,20 @@ var User = global.sequelize.define('user', {
   },
   email: {
     type: Sequelize.STRING,
-    required: true
+    allowNull: false,
+    unique: true
+  },
+  local_hash: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  local_salt: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  local_iterations: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 }, {
   freezeTableName: true, // Model tableName will be the same as the model name
@@ -26,7 +39,8 @@ var User = global.sequelize.define('user', {
   ]
 });
 
-User.sync({force: true}).then(function () {
+//{force: true}
+User.sync().then(function () {
   // Table created
 });
 
