@@ -32,7 +32,7 @@ describe('API', function(){
     superagent
       .get(apiDomain + '/this/path/surely/dont/exist')
       .end(function(res){
-        expect(res.status).to.notEqual(200);
+        expect(res.status).to.equal(404);
 	      done();
     })
   })
