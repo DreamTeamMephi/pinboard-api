@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 
 var Card = global.sequelize.define('card', {
   title: {

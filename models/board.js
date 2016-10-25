@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 
 var Board = global.sequelize.define('board', {
   uname: {
