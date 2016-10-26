@@ -6,7 +6,7 @@ let user = {};
 
 user.localRegister = async (req, res, next) => {
     try {
-        let user = req.body;
+        let user = req.body.user;
         log.info(user);
         if (!user.password) return next('NO_PASSWORD_GIVEN');
         let passwordObject = await password.getLocal(user.password);
